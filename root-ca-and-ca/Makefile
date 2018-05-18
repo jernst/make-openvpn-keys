@@ -32,7 +32,10 @@ working-ca/working-ca.key :
 	@echo ++ Generating keys for the working certificate authority
 	openssl genrsa -out working-ca/working-ca.key $(keysize) $(sendTo) $(sendTo)
 
-client : init client/client.crt
+client : init client/client-chain.crt
+
+client/client-chain.crt : client/client.crt working-ca/working-ca.crt
+	cat client/client.crt working-ca/working-ca.crt > client/client-chain.crt
 
 client/client.crt : client/client.csr working-ca/working-ca.key
 	@echo ++ Working certificate authority is issuing certificate for the client
@@ -46,7 +49,10 @@ client/client.key :
 	@echo ++ Generating keys for the client
 	openssl genrsa -out client/client.key $(keysize) $(sendTo) $(sendTo)
 
-server : init server/server.crt
+server : init server/server-chain.crt
+
+server/server-chain.crt : server/server.crt working-ca/working-ca.crt
+	cat server/server.crt working-ca/working-ca.crt > server/server-chain.crt
 
 server/server.crt : server/server.csr working-ca/working-ca.key
 	@echo ++ Working certificate authority is issuing certificate for the server
