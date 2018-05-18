@@ -22,16 +22,16 @@ Once it is done, you will have:
 
 Here is the relevant snippet of your OpenVPN client configuration:
 
-``
+```
 ca ca/ca.crt
 cert client/client.crt
 key client/client.key
-``
+```
 
 And of the OpenVPN server configuration:
 
-``
+```
 ca ca/ca.crt
 cert server/server.crt
 key server/server.key
-``
+```
