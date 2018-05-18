@@ -49,14 +49,11 @@ client/client.key :
 	@echo ++ Generating keys for the client
 	openssl genrsa -out client/client.key $(keysize) $(sendTo) $(sendTo)
 
-server : init server/server-chain.crt
+server : init server/server.crt
 
-server/server-chain.crt : server/server.crt working-ca/working-ca.crt
-	cat server/server.crt working-ca/working-ca.crt > server/server-chain.crt
-
-server/server.crt : server/server.csr working-ca/working-ca.key
-	@echo ++ Working certificate authority is issuing certificate for the server
-	openssl x509 -req -in server/server.csr -CA working-ca/working-ca.crt -CAkey working-ca/working-ca.key -out server/server.crt -CAcreateserial $(sendTo)
+server/server.crt : server/server.csr root-ca/root-ca.key
+	@echo ++ Root certificate authority is issuing certificate for the server
+	openssl x509 -req -in server/server.csr -CA root-ca/root-ca.crt -CAkey root-ca/root-ca.key -out server/server.crt -CAcreateserial $(sendTo)
 
 server/server.csr : server/server.key
 	@echo ++ Creating certificate signing request for the server
@@ -74,6 +71,6 @@ init :
 	@[[ -d server ]]     || mkdir server
 
 clean :
-	rm -rf root-ca/root-ca.{key,crt,srl} working-ca/working-ca.{key,csr,crt,srl} client/client.{key,csr,crt} server/server.{key,csr,crt} 
+	rm -rf root-ca/root-ca.{key,crt,srl} working-ca/working-ca.{key,csr,crt,srl} client/client.{key,csr,crt} client/client-chain.crt server/server.{key,csr,crt}
 
 .PHONY: default init root-ca working-ca client server clean

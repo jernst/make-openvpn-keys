@@ -8,6 +8,7 @@ Once it is done, you will have:
 
 * ca/ca.key -- private key of the certificate authority
 * ca/ca.crt -- self-signed certificate of the certificate authority
+* ca/ca.srl -- (you can ignore)
 
 * client/client.key -- key for the OpenVPN client
 * client/client.csr -- certificate request of the client (you can ignore)
