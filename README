@@ -1,20 +1,12 @@
-This Makefile generates the keys needed for OpenVPN, without
+This provides Makefiles that generate the keys needed for OpenVPN, without
 EasyRSA (which may be easy, but is confusing as hell)
 
-Here's how it works. Execute:
+There are two versions:
+* single-ca: a single certificate authority, which issues a client cert and a server cert
+* root-ca-and-ca: there is a root certificate authority, which issues a cert for a working
+  certificate authority, which issues a client cert and a server cert
 
-    make
-
-Once it is done, you will have
-
-* ca/ca.key -- private key of the certificate authority
-* ca/ca.crt -- self-signed certificate of the certificate authority
-
-* client/client.key -- key for the OpenVPN client
-* client/client.csr -- certificate request of the client (you can ignore)
-* client/client.crt -- certificate for the OpenVPN client, issued by the certificate authority
-
-* server/server.key -- key for the OpenVPN server
-* server/server.csr -- certificate request of the server (you can ignore)
-* server/server.crt -- certificate for the OpenVPN server, issued by the certificate authority
+The second form makes it easier to recover from compromised servers if you don't keep the
+key of the root certificate authority on the server, and you have lots of users. If you
+don't have lots of users, don't bother and go with the first.
 

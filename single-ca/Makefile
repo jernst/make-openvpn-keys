@@ -1,10 +1,3 @@
-#
-# Create OpenVPN keys without EasyRSA (which may be easy, but is also very confusing)
-#
-# Enter OpenVPN, which is merely odd. Why do some subcommands read the -config file,
-# and others don't?
-#
-
 # How many bits do you want for keys
 keysize=4096
 
@@ -18,7 +11,7 @@ ca : init ca/ca.crt
 
 ca/ca.crt : ca/ca.key
 	@echo ++ Certificate authority it signing its own certificate, commonName is ca
-	echo ca | openssl req -x509 -new -nodes -key ca/ca.key -out ca/ca.crt -config ca/ca.cnf $(sendTo)
+	echo ca | openssl req -x509 -new -nodes -key ca/ca.key -out ca/ca.crt -config ca.cnf $(sendTo)
 
 ca/ca.key : 
 	@echo ++ Generating keys for the certificate authority
@@ -32,7 +25,7 @@ client/client.crt : client/client.csr ca/ca.key
 
 client/client.csr : client/client.key
 	@echo ++ Creating certificate signing request for the client
-	echo client | openssl req -new -key client/client.key -out client/client.csr -config ca/ca.cnf $(sendTo)
+	echo client | openssl req -new -key client/client.key -out client/client.csr -config ca.cnf $(sendTo)
 
 client/client.key :
 	@echo ++ Generating keys for the client
@@ -46,7 +39,7 @@ server/server.crt : server/server.csr ca/ca.key
 
 server/server.csr : server/server.key
 	@echo ++ Creating certificate signing request for the server
-	echo server | openssl req -new -key server/server.key -out server/server.csr -config ca/ca.cnf $(sendTo)
+	echo server | openssl req -new -key server/server.key -out server/server.csr -config ca.cnf $(sendTo)
 
 server/server.key :
 	@echo ++ Generating keys for the server
